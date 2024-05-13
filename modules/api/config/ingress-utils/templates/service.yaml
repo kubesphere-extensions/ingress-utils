@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: ingress-utils-controller-manager
+  labels:
+    {{- include "ingress-utils.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 443
+      targetPort: 8443
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "ingress-utils.selectorLabels" . | nindent 4 }}
