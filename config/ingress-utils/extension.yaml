@@ -1,0 +1,44 @@
+apiVersion: v1
+name: ingress-utils
+version: 1.0.0
+displayName:
+  zh: KubeSphere Ingress Utils
+  en: KubeSphere Ingress Utils
+description:
+  zh: |-
+    应用路由工具在 KubeSphere Core 的基础上，为应用路由提供了多项扩展能力，如域名重用校验等。
+  en: |-
+    Based on KubeSphere Core, the application routing tool provides multiple extension capabilities for application routing, such as domain name reuse verification.
+category: networking
+keywords:
+  - ingress
+  - kubesphere
+home: https://kubesphere.com.cn/
+sources: []
+kubeVersion: '>=1.21.0-0'
+ksVersion: '>=4.0.0-0'
+maintainers:
+  - name: KubeSphere
+    email: kubesphere@yunify.com
+provider:
+  zh:
+    name: 北京青云科技股份有限公司
+    email: kubesphere@yunify.com
+    url: https://kubesphere.com.cn/
+  en:
+    name: QingCloud Technologies
+    email: kubesphere@yunify.com
+    url: https://kubesphere.co/
+staticFileDirectory: static
+icon: ./static/favicon.svg
+dependencies:
+  - name: frontend
+    tags:
+      - extension
+  - name: backend
+    tags:
+      - agent
+installationMode: Multicluster
+images:
+  - docker.io/kubesphere/ingress-utils-controller-manager:v0.1.0
+docs: https://docs.kubesphere.com.cn/
