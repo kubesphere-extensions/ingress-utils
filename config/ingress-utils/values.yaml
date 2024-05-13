@@ -1,0 +1,18 @@
+global:
+  imageRegistry: docker.io
+  tag: ""
+  imagePullSecrets: []
+
+backend:
+  controller:
+    image:
+      registry: ""
+      repository: kubesphere/ingress-utils-controller-manager
+      tag: "v0.1.0"
+    resources:
+      limits:
+        cpu: 1
+        memory: 1000Mi
+      requests:
+        cpu: 30m
+        memory: 50Mi
