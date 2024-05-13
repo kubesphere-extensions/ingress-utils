@@ -112,7 +112,7 @@ func certsExists() bool {
 func generateCerts() error {
 	certFile := path.Join(defaultCertDir, defaultCertName)
 	keyFile := path.Join(defaultCertDir, defaultKeyName)
-	cert, key, err := certutil.GenerateSelfSignedCertKeyWithFixtures("localhost", []net.IP{net.ParseIP("127.0.0.1")}, []string{"spring-cloud-controller-manager.kubesphere-spring-cloud-system.svc"}, "")
+	cert, key, err := certutil.GenerateSelfSignedCertKeyWithFixtures("localhost", []net.IP{net.ParseIP("127.0.0.1")}, []string{}, "")
 	if err != nil {
 		return fmt.Errorf("unable to generate self signed cert: %s", err)
 	}
