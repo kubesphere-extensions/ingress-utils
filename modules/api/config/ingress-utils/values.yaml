@@ -1,0 +1,55 @@
+global:
+  imageRegistry: docker.io
+  tag: ""
+  imagePullSecrets: []
+
+controller:
+  image:
+    registry: ""
+    repository: kubesphere/ingress-utils-controller-manager
+    tag: "v0.1.0"
+    digest: ""
+    pullPolicy: IfNotPresent
+    pullSecrets: []
+  containerPorts:
+    - containerPort: 8080
+      protocol: TCP
+    - containerPort: 8443
+      protocol: TCP
+  ## @param resources.limits The resource limits for the ks-controller-manager containers
+  ## @param resources.requests The requested resources for the ks-controller-manager containers
+  ##
+  resources:
+    limits:
+      cpu: 1
+      memory: 1000Mi
+    requests:
+      cpu: 30m
+      memory: 50Mi
+  ## @param command Override default container command (useful when using custom images)
+  ##
+  command:
+    - controller-manager
+    - --logtostderr=true
+    - --leader-elect=true
+  ## @param extraEnvVars Array with extra environment variables to add to ks-controller-manager
+  ##
+  extraEnvVars: []
+
+tolerations:
+  - key: node-role.kubernetes.io/master
+    effect: NoSchedule
+  - key: CriticalAddonsOnly
+    operator: Exists
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 60
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 60
+
+affinity: {}
+
+nodeSelector: {}
