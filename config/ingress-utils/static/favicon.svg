@@ -1,6 +1,4 @@
-<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-<g id="04.&#229;&#175;&#185;&#232;&#177;&#161;(Object)/003.Kubernetes Resources/010.Ingress">
-<path id="L Shape" fill-rule="evenodd" clip-rule="evenodd" d="M12 7.38113L19.9997 2.7626L19.9999 11.9998L12 7.3814L4.00012 11.9998L4.00023 2.7626L12 7.38113ZM4.00012 11.9998L4 21.2374L11.9987 16.6193L4.00012 11.9998ZM19.9999 11.9998L12.0012 16.6193L20 21.2374L19.9999 11.9998Z" fill="#B6C2CD"/>
-<path id="D Shape" fill-rule="evenodd" clip-rule="evenodd" d="M19.9998 12L12 16.62L4 11.9998L12 7.38L19.9998 12Z" fill="#324558"/>
-</g>
+<svg width="200" height="200" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
+<path fill-rule="evenodd" clip-rule="evenodd" d="M99.9999 61.5115L33.3343 99.9982L33.3353 23.0215L99.9999 61.5092L166.665 23.0215L166.666 99.9981L99.9999 61.5115ZM166.666 99.9981L100.01 138.494L166.666 176.978L166.666 99.9981ZM33.3343 99.9982L33.3333 176.978L99.9896 138.494L33.3343 99.9982Z" fill="#55BC8A"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M166.665 100L100 138.5L33.3333 99.9983L100 61.5L166.665 100Z" fill="#324558"/>
 </svg>
