@@ -10,6 +10,7 @@ import (
 	"k8s.io/klog/v2"
 
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/util/sets"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/webhook/admission"
@@ -28,6 +29,25 @@ func (r *IngressWebhook) ValidateCreate(ctx context.Context, obj runtime.Object)
 
 func (r *IngressWebhook) ValidateUpdate(ctx context.Context, oldObj, newObj runtime.Object) (admission.Warnings, error) {
 	klog.V(4).Infof("validate update ingress: %v", newObj)
+	// If the host has not changed or part of the host has been removed, the verification will be skipped.
+	oldIngress := oldObj.(*networkv1.Ingress)
+	newIngress := newObj.(*networkv1.Ingress)
+	oldHosts := sets.New[string]()
+	newHosts := sets.New[string]()
+	for _, rule := range oldIngress.Spec.Rules {
+		oldHosts.Insert(rule.Host)
+	}
+	for _, rule := range newIngress.Spec.Rules {
+		// cannot be duplicates in newHosts
+		if newHosts.Has(rule.Host) {
+			return nil, fmt.Errorf("duplicate host %s in the current ingress", rule.Host)
+		}
+		newHosts.Insert(rule.Host)
+	}
+	if newHosts.IsSuperset(oldHosts) {
+		return nil, nil
+	}
+
 	return r.validateIngressHost(ctx, newObj.(*networkv1.Ingress))
 }
 
