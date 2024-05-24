@@ -5,10 +5,12 @@ global:
 
 backend:
   controller:
+    # TODO: 开发测试环境使用的地址，发版本时需要修改
     image:
       registry: ""
-      repository: kubesphere/ingress-utils-controller-manager
-      tag: "v0.1.0"
+      repository: hongzhouwei/ingress-utils-controller-manager
+      tag: "main"
+      pullPolicy: Always
     resources:
       limits:
         cpu: 1
