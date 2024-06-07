@@ -5,10 +5,10 @@ global:
 
 backend:
   controller:
-    # TODO: 开发测试环境使用的地址，发版本时需要修改
+    # TODO: 开发测试环境使用的配置，发版本时需要修改
     image:
       registry: ""
-      repository: hongzhouwei/ingress-utils-controller-manager
+      repository: kubespherehub/ingress-utils-controller-manager
       tag: "main"
       pullPolicy: Always
     resources:
