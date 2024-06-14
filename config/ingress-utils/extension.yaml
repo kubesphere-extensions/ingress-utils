@@ -40,6 +40,11 @@ dependencies:
     tags:
       - agent
 installationMode: Multicluster
+externalDependencies:
+ - name: gateway
+   type: extension
+   version: ">= 1.0.0"
+   required: true
 images:
   - docker.io/kubesphere/ingress-utils-controller-manager:v0.1.0
 docs: https://docs.kubesphere.com.cn/
