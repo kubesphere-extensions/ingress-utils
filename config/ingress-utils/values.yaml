@@ -9,7 +9,7 @@ backend:
     image:
       registry: ""
       repository: kubespherehub/ingress-utils-controller-manager
-      tag: "v1.0.0-alpha0"
+      tag: "v1.0.0-alpha.0"
       pullPolicy: Always
     resources:
       limits:
