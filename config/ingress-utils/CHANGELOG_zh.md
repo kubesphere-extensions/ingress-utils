@@ -4,7 +4,7 @@ RELEASE_MARK v4.1.0 RELEASE_MARK
 Please do not delete this line of version tag
 -->
 
-## v1.0.0
+## v1.0.0-alpha0
 
 ### 新特性
  - 基于全新的微内核架构 KubeSphere LuBan 重构
