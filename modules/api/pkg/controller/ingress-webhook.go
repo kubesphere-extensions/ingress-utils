@@ -24,38 +24,19 @@ type IngressWebhook struct {
 
 func (r *IngressWebhook) ValidateCreate(ctx context.Context, obj runtime.Object) (admission.Warnings, error) {
 	klog.V(4).Infof("validate create ingress: %v", obj)
-	return r.validateIngressHost(ctx, obj.(*networkv1.Ingress))
+	return r.validateIngressHost(ctx, nil, obj.(*networkv1.Ingress))
 }
 
 func (r *IngressWebhook) ValidateUpdate(ctx context.Context, oldObj, newObj runtime.Object) (admission.Warnings, error) {
 	klog.V(4).Infof("validate update ingress: %v", newObj)
-	// If the host has not changed or part of the host has been removed, the verification will be skipped.
-	oldIngress := oldObj.(*networkv1.Ingress)
-	newIngress := newObj.(*networkv1.Ingress)
-	oldHosts := sets.New[string]()
-	newHosts := sets.New[string]()
-	for _, rule := range oldIngress.Spec.Rules {
-		oldHosts.Insert(rule.Host)
-	}
-	for _, rule := range newIngress.Spec.Rules {
-		// cannot be duplicates in newHosts
-		if newHosts.Has(rule.Host) {
-			return nil, fmt.Errorf("duplicate host %s in the current ingress", rule.Host)
-		}
-		newHosts.Insert(rule.Host)
-	}
-	if newHosts.IsSuperset(oldHosts) {
-		return nil, nil
-	}
-
-	return r.validateIngressHost(ctx, newObj.(*networkv1.Ingress))
+	return r.validateIngressHost(ctx, oldObj.(*networkv1.Ingress), newObj.(*networkv1.Ingress))
 }
 
 func (r *IngressWebhook) ValidateDelete(ctx context.Context, obj runtime.Object) (admission.Warnings, error) {
 	return nil, nil
 }
 
-func (r *IngressWebhook) validateIngressHost(ctx context.Context, ingress *networkv1.Ingress) (admission.Warnings, error) {
+func (r *IngressWebhook) validateIngressHost(ctx context.Context, oldIngress, newIngress *networkv1.Ingress) (admission.Warnings, error) {
 	settingList := v1alpha2.ClusterIngressSettingList{}
 	if err := r.List(ctx, &settingList); err != nil {
 		return nil, err
@@ -65,13 +46,14 @@ func (r *IngressWebhook) validateIngressHost(ctx context.Context, ingress *netwo
 	var err error
 	var domain string
 
-	for _, rule := range ingress.Spec.Rules {
+	for ruleIndex, rule := range newIngress.Spec.Rules {
 		domain = rule.Host
 		for i := range settingList.Items {
 			if settingList.Items[i].Spec.UniqueDomainPattern != "" {
 				pattern := settingList.Items[i].Spec.UniqueDomainPattern
 				g = glob.MustCompile(pattern, '.')
 				if g.Match(domain) {
+					// for all ingress in the cluster
 					ingressList := networkv1.IngressList{}
 					if err = r.List(ctx, &ingressList); err != nil {
 						return nil, err
@@ -84,12 +66,39 @@ func (r *IngressWebhook) validateIngressHost(ctx context.Context, ingress *netwo
 							}
 						}
 					}
+
+					// for current ingress
+					if oldIngress != nil {
+						// for update
+						// if the host has not changed or part of the host has been removed, the verification will be skipped.
+						oldHosts := sets.New[string]()
+						newHosts := sets.New[string]()
+						for _, r := range oldIngress.Spec.Rules {
+							oldHosts.Insert(r.Host)
+						}
+						for _, r := range newIngress.Spec.Rules {
+							// cannot be duplicates in newHosts
+							if newHosts.Has(r.Host) {
+								return nil, fmt.Errorf("duplicate host %s in the current ingress", r.Host)
+							}
+							newHosts.Insert(r.Host)
+						}
+						if newHosts.IsSuperset(oldHosts) {
+							return nil, nil
+						}
+					}
+
+					for i, rule := range newIngress.Spec.Rules {
+						if ruleIndex != i && g.Match(rule.Host) {
+							return nil, fmt.Errorf("Restrict the use of %s, the current ingress", domain)
+						}
+					}
 				}
 			}
 		}
 	}
 
-	klog.V(4).Infof("validate ingress host success: %v", ingress)
+	klog.V(4).Infof("validate ingress host success: %v", newIngress)
 	return nil, nil
 }
 
