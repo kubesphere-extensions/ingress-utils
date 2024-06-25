@@ -1,0 +1,60 @@
+apiVersion: iam.kubesphere.io/v1beta1
+kind: RoleTemplate
+metadata:
+  labels:
+    iam.kubesphere.io/scope: cluster
+    kubesphere.io/managed: "true"
+    iam.kubesphere.io/category: cluster-ingress-utils-management
+    iam.kubesphere.io/aggregate-to-cluster-viewer: ""
+  name: cluster-view-ingress-utils
+spec:
+  description:
+    en: View ingress utils.
+    zh: 查看应用路由工具。
+  displayName:
+    en: Ingress Utils Viewing
+    zh: 应用路由工具查看
+  rules:
+    - apiGroups:
+        - gateway.kubesphere.io
+      resources:
+        - clusteringresssettings
+      verbs:
+        - get
+        - list
+        - watch
+---
+apiVersion: iam.kubesphere.io/v1beta1
+kind: RoleTemplate
+metadata:
+  labels:
+    iam.kubesphere.io/scope: cluster
+    kubesphere.io/managed: "true"
+    iam.kubesphere.io/category: cluster-ingress-utils-management
+  name: cluster-manage-ingress-utils
+spec:
+  description:
+    en: Manage ingress utils.
+    zh: 管理应用路由工具。
+  displayName:
+    en: Ingress Utils Management
+    zh: 应用路由工具管理
+  rules:
+    - apiGroups:
+        - gateway.kubesphere.io
+      resources:
+        - clusteringresssettings
+      verbs:
+        - '*'
+---
+apiVersion: iam.kubesphere.io/v1beta1
+kind: Category
+metadata:
+  labels:
+    iam.kubesphere.io/scope: cluster
+    kubesphere.io/managed: 'true'
+  name: cluster-ingress-utils-management
+spec:
+  displayName:
+    en: Ingress Utils
+    zh: 应用路由工具
