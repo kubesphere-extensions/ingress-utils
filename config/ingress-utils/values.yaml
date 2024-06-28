@@ -5,11 +5,10 @@ global:
 
 backend:
   controller:
-    # TODO: 开发测试环境使用的配置，发版本时需要修改
     image:
       registry: ""
       repository: kubespherehub/ingress-utils-controller-manager
-      tag: "v1.0.0-alpha.1"
+      tag: "v1.0.0"
       pullPolicy: Always
     resources:
       limits:
