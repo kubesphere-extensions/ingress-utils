@@ -6,7 +6,7 @@ global:
 controller:
   image:
     registry: ""
-    repository: kubesphere/ingress-utils-controller-manager
+    repository: kse/ingress-utils-controller-manager
     tag: "v1.0.0"
     digest: ""
     pullPolicy: IfNotPresent
