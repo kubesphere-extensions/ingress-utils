@@ -1,5 +1,5 @@
 global:
-  imageRegistry: docker.io
+  imageRegistry: registry.cn-beijing.aliyuncs.com
   tag: ""
   imagePullSecrets: []
 
@@ -7,7 +7,7 @@ backend:
   controller:
     image:
       registry: ""
-      repository: kubespherehub/ingress-utils-controller-manager
+      repository: kse/ingress-utils-controller-manager
       tag: "v1.0.0"
       pullPolicy: Always
     resources:
