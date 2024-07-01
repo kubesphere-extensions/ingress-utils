@@ -34,6 +34,6 @@ jobs:
           DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
         if: github.event_name == 'push'
         run: |
-          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin
-          REPO=${{ secrets.DOCKERHUB_USERNAME }} TAG="${GITHUB_REF#refs/*/}" make container-cross-push
+          echo ${{ secrets.DOCKERHUB_PASSWORD }} | docker login -u ${{ secrets.DOCKERHUB_USERNAME }} --password-stdin registry.cn-beijing.aliyuncs.com
+          REPO=registry.cn-beijing.aliyuncs.com/kse TAG="${GITHUB_REF#refs/*/}" make container-cross-push
         working-directory: modules/api
